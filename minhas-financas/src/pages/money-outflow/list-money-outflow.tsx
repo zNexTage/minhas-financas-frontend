@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Container, Table } from "react-bootstrap";
 import MoneyOutflow from "../../entities/MoneyOutflow";
 import MoneyOutflowClient from "../../client/MoneyOutflowClient";
+import { Link } from "react-router-dom";
 
 interface IProps {
     client: MoneyOutflowClient;
@@ -21,13 +22,13 @@ const ListMoneyOutflow = ({ client }: IProps) => {
     }
 
     return (
-        <Container>
+        <Container className="mt-5">
             <h1>
                 Saída de dinheiro
             </h1>
-            <Button>
+            <Link to={"/MoneyOutflow/Register"} className="btn btn-info text-white">
                 Adicionar saída
-            </Button>
+            </Link>
             <Table striped bordered hover size="lg" className="mt-2">
                 <thead>
                     <tr>
