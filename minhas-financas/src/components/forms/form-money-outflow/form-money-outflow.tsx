@@ -3,11 +3,17 @@ import { useForm } from "react-hook-form";
 import MoneyOutflow from "../../../entities/MoneyOutflow";
 
 interface IProps {
-    onSubmit: (moneyOutflow: MoneyOutflow) => void;
+    onSubmit: (moneyOutflow: MoneyOutflow) => Promise<void>;
 }
 
 const FormMoneyOutflow = ({ onSubmit }: IProps) => {
-    const { register, handleSubmit, formState: { errors } } = useForm<MoneyOutflow>();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<MoneyOutflow>();
+
+    const processSubmit = async (formData: MoneyOutflow) => {
+        await onSubmit(formData);
+
+        reset();
+    }
 
     return (
         <Card>
@@ -15,7 +21,7 @@ const FormMoneyOutflow = ({ onSubmit }: IProps) => {
                 <b>Saída de dinheiro | Registro</b>
             </Card.Header>
             <Card.Body>
-                <Form onSubmit={handleSubmit(onSubmit)}>
+                <Form onSubmit={handleSubmit(processSubmit)}>
                     <div>
                         <Form.Label
                             htmlFor="txtDescription">
@@ -35,10 +41,10 @@ const FormMoneyOutflow = ({ onSubmit }: IProps) => {
                             placeholder="Descreva com o que esse dinheiro foi gasto"
                             id="txtDescription"
                         />
-                        {errors.description && 
-                        <Alert className="mt-2" variant="danger">
-                            {errors.description.message}
-                        </Alert>
+                        {errors.description &&
+                            <Alert className="mt-2" variant="danger">
+                                {errors.description.message}
+                            </Alert>
                         }
                     </div>
 
@@ -59,10 +65,10 @@ const FormMoneyOutflow = ({ onSubmit }: IProps) => {
                             id="txtValue"
                             type="number"
                         />
-                        {errors.value && 
-                        <Alert className="mt-2"  variant="danger">
-                            {errors.value.message}
-                        </Alert>
+                        {errors.value &&
+                            <Alert className="mt-2" variant="danger">
+                                {errors.value.message}
+                            </Alert>
                         }
                     </div>
 
@@ -83,10 +89,10 @@ const FormMoneyOutflow = ({ onSubmit }: IProps) => {
                             id="txtQuantity"
                             type="number"
                         />
-                        {errors.quantity && 
-                        <Alert className="mt-2"  variant="danger">
-                            {errors.quantity.message}
-                        </Alert>
+                        {errors.quantity &&
+                            <Alert className="mt-2" variant="danger">
+                                {errors.quantity.message}
+                            </Alert>
                         }
                     </div>
 
@@ -110,10 +116,10 @@ const FormMoneyOutflow = ({ onSubmit }: IProps) => {
                             <option value="Dinheiro">Dinheiro</option>
                         </Form.Select>
 
-                        {errors.paymentMethod && 
-                        <Alert className="mt-2"  variant="danger">
-                            {errors.paymentMethod.message}
-                        </Alert>
+                        {errors.paymentMethod &&
+                            <Alert className="mt-2" variant="danger">
+                                {errors.paymentMethod.message}
+                            </Alert>
                         }
                     </div>
 
@@ -137,10 +143,10 @@ const FormMoneyOutflow = ({ onSubmit }: IProps) => {
                             id="txtLocation"
                         />
 
-                        {errors.paymentLocation && 
-                        <Alert className="mt-2"  variant="danger">
-                            {errors.paymentLocation.message}
-                        </Alert>
+                        {errors.paymentLocation &&
+                            <Alert className="mt-2" variant="danger">
+                                {errors.paymentLocation.message}
+                            </Alert>
                         }
                     </div>
 
@@ -150,7 +156,7 @@ const FormMoneyOutflow = ({ onSubmit }: IProps) => {
                             Categoria
                         </Form.Label>
                         <Form.Select id="cboCategory"
-                            {...register("category", {
+                            {...register("paymentCategory", {
                                 required: {
                                     message: "Escolha a categoria do pagamento",
                                     value: true
@@ -163,14 +169,18 @@ const FormMoneyOutflow = ({ onSubmit }: IProps) => {
                             <option value="Outros">Outros</option>
                         </Form.Select>
 
-                        {errors.category && 
-                        <Alert className="mt-2"  variant="danger">
-                            {errors.category.message}
-                        </Alert>
+                        {errors.paymentCategory &&
+                            <Alert className="mt-2" variant="danger">
+                                {errors.paymentCategory.message}
+                            </Alert>
                         }
                     </div>
 
-                    <Button type="submit" variant="primary" className="mt-2" size="lg">
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        className="mt-2"
+                        size="lg">
                         Enviar
                     </Button>
                 </Form>

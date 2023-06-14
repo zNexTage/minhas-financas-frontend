@@ -6,7 +6,7 @@ class MoneyOutflow {
         public quantity: number,
         public paymentMethod: string,
         public paymentLocation: string,
-        public category: string,
+        public paymentCategory: string,
         public id?: string
     ) {
 
