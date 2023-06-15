@@ -191,9 +191,9 @@ const FormMoneyOutflow = ({ onSubmit }: IProps) => {
                             id="txtDate"
                             type="date"
                         />
-                        {errors.value &&
+                        {errors.date &&
                             <Alert className="mt-2" variant="danger">
-                                {errors.value.message}
+                                {errors.date.message}
                             </Alert>
                         }
                     </div>
