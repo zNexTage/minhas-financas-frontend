@@ -6,6 +6,7 @@ import RegisterMoneyOutflow from "./pages/money-outflow/register-money-outflow";
 import BasePage from "./components/base-page";
 import MoneyInflowClient from "./client/MoneyInflowClient";
 import ListMoneyInflow from "./pages/money-inflow/list-money-inflow";
+import RegisterMoneyInflow from "./pages/money-inflow/register-money-inflow";
 
 const axios = new AxiosClient();
 const moneyOutflowClient = new MoneyOutflowClient(axios);
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
             {
                 path: "MoneyInflow",
                 element: <ListMoneyInflow client={moneyInflowClient} />
+            },
+            {
+                path: "MoneyInflow/Register",
+                element: <RegisterMoneyInflow client={moneyInflowClient} />
             }
         ]
     },
