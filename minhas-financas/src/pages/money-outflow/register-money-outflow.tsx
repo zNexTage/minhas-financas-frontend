@@ -9,8 +9,7 @@ interface IProps {
 const RegisterMoneyOutflow = ({ client }: IProps) => {
 
     const onSubmit = async (moneyOutflow: MoneyOutflowDto) => {
-        try{
-            debugger
+        try{            
             await client.register(
                 moneyOutflow
             );
