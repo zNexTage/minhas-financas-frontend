@@ -1,15 +1,14 @@
 import { Alert, Button, Card, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import MoneyOutflow from "../../../entities/MoneyOutflow";
 
 interface IProps {
-    onSubmit: (moneyOutflow: MoneyOutflow) => Promise<void>;
+    onSubmit: (moneyOutflow: MoneyOutflowDto) => Promise<void>;
 }
 
 const FormMoneyOutflow = ({ onSubmit }: IProps) => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<MoneyOutflow>();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<MoneyOutflowDto>();
 
-    const processSubmit = async (formData: MoneyOutflow) => {
+    const processSubmit = async (formData: MoneyOutflowDto) => {
         await onSubmit(formData);
 
         reset();
@@ -172,6 +171,29 @@ const FormMoneyOutflow = ({ onSubmit }: IProps) => {
                         {errors.paymentCategory &&
                             <Alert className="mt-2" variant="danger">
                                 {errors.paymentCategory.message}
+                            </Alert>
+                        }
+                    </div>
+
+                    <div>
+                        <Form.Label
+                            htmlFor="txtDate">
+                            Data
+                        </Form.Label>
+                        <Form.Control
+                            {...register("date", {
+                                required: {
+                                    message: "Informe a data do gasto",
+                                    value: true
+                                }
+                            })}
+                            placeholder="Quando que o gasto foi realizado?"
+                            id="txtDate"
+                            type="date"
+                        />
+                        {errors.value &&
+                            <Alert className="mt-2" variant="danger">
+                                {errors.value.message}
                             </Alert>
                         }
                     </div>

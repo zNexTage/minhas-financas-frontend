@@ -1,20 +1,24 @@
-import { Container } from "react-bootstrap"
-import FormMoneyOutflow from "../../components/forms/form-money-outflow"
-import MoneyOutflow from "../../entities/MoneyOutflow"
-import axios from "axios"
+import { Container } from "react-bootstrap";
+import FormMoneyOutflow from "../../components/forms/form-money-outflow";
+import MoneyOutflowClient from "../../client/MoneyOutflowClient";
 
-const RegisterMoneyOutflow = () => {
+interface IProps {
+    client: MoneyOutflowClient
+}
 
-    const onSubmit = async (moneyOutflow: MoneyOutflow) => {        
-        const response = await axios.post("http://localhost:5132/MoneyOutflow/Register",
-         moneyOutflow, 
-         {
-            headers: {
-            "Authorization": "Bearer SET_TOKEN_HERE"
-         }}
-         );
+const RegisterMoneyOutflow = ({ client }: IProps) => {
 
-        alert("Saída de dinheiro registrado com sucesso!");
+    const onSubmit = async (moneyOutflow: MoneyOutflowDto) => {
+        try{
+            debugger
+            await client.register(
+                moneyOutflow
+            );
+            alert("Saída de dinheiro registrado com sucesso!");
+        }
+        catch(err){
+            alert("Não possível realizar o registro da saída");
+        }
     }
 
     return (

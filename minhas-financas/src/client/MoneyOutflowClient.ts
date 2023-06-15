@@ -1,4 +1,5 @@
 import MoneyOutflow from "../entities/MoneyOutflow";
+import MoneyOutflowMapper from "../mappers/money-outflow";
 import IHttpClient from "./providers/IHttpClient";
 
 /**
@@ -6,11 +7,12 @@ import IHttpClient from "./providers/IHttpClient";
  */
 class MoneyOutflowClient {
     private BASE_URL: string = "MoneyOutflow";
+    private mapper: MoneyOutflowMapper;
 
     constructor(
         private client: IHttpClient
     ) {
-
+        this.mapper = new MoneyOutflowMapper();
     }
 
     /**
@@ -20,19 +22,19 @@ class MoneyOutflowClient {
      */
     async getAll(): Promise<Array<MoneyOutflow>> {
         const response = await this.client.getAll<Array<MoneyOutflowDto>>({ url: this.BASE_URL });
-        
-        const moneyOutflows = response.map(dto => new MoneyOutflow(
-            dto.description,
-            dto.value,
-            dto.quantity,
-            dto.paymentMethod,
-            dto.paymentLocation,
-            dto.paymentCategory,
-            new Date(dto.date),
-            dto.id
-        ));
+
+        const moneyOutflows = response.map(dto => this.mapper.fromDto(dto));
 
         return moneyOutflows;
+    }
+
+    async register(moneyOutflow: MoneyOutflowDto) {
+        const response = await this.client.post<MoneyOutflowDto>({
+            url: `${this.BASE_URL}/Register`,
+            payload: moneyOutflow
+        });
+
+        return this.mapper.fromDto(response);
     }
 }
 
