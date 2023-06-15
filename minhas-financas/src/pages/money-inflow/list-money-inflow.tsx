@@ -17,7 +17,6 @@ const ListMoneyInflow = ({ client }: IProps) => {
 
     const getAllMoneyInflows = async () => {
         const response = await client.getAll();
-        console.log(response);
 
         setMoneyInflows(response);
     }
