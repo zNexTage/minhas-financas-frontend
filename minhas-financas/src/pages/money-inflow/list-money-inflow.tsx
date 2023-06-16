@@ -26,7 +26,7 @@ const ListMoneyInflow = ({ client }: IProps) => {
             <h1>
                 Entrada de dinheiro
             </h1>
-            <Link to={"/MoneyOutflow/Register"} className="btn btn-info text-white">
+            <Link to={"/MoneyInflow/Register"} className="btn btn-info text-white">
                 Adicionar entrada
             </Link>
             <Table striped bordered hover size="lg" className="mt-2">
