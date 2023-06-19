@@ -3,6 +3,7 @@ import ListMoneyInflow from "../pages/money-inflow/list-money-inflow";
 import RegisterMoneyInflow from "../pages/money-inflow/register-money-inflow";
 import createAxiosClient from "../factory/create-axios-client";
 import MoneyInflowClient from "../client/MoneyInflowClient";
+import PrivateRoute from "./private-route";
 
 const BASE_URL = "MoneyInflow";
 
@@ -12,11 +13,15 @@ const moneyInflowClient = new MoneyInflowClient(axios);
 const moneyInflowRoutes: RouteObject[] = [
     {
         path: BASE_URL,
-        element: <ListMoneyInflow client={moneyInflowClient} />
+        element: (<PrivateRoute>
+            <ListMoneyInflow client={moneyInflowClient} />
+        </PrivateRoute>)
     },
     {
         path: `${BASE_URL}/Register`,
-        element: <RegisterMoneyInflow client={moneyInflowClient} />
+        element: (<PrivateRoute>
+            <RegisterMoneyInflow client={moneyInflowClient} />
+        </PrivateRoute>)
     }
 ]
 

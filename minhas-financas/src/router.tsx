@@ -4,6 +4,7 @@ import Dashboard from "./pages/dashboard";
 import moneyOutflowRoutes from "./routes/money-outflow-routes";
 import moneyInflowRoutes from "./routes/money-inflow-routes";
 import userRoutes from "./routes/user-routes";
+import PrivateRoute from "./routes/private-route";
 
 
 /**
@@ -17,7 +18,9 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "Dashboard",
-                element: <Dashboard />
+                element: (<PrivateRoute>
+                    <Dashboard />
+                </PrivateRoute>)
             },
             ...userRoutes,
             ...moneyOutflowRoutes,
