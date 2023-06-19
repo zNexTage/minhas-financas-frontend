@@ -5,20 +5,20 @@ import MoneyOutflowClient from "../client/MoneyOutflowClient";
 import RegisterMoneyOutflow from "../pages/money-outflow/register-money-outflow";
 import PrivateRoute from "./private-route";
 
-const BASE_ROUTE = "MoneyOutflow";
+export const MONEY_OUTFLOW_BASE_ROUTE = "MoneyOutflow";
 
 const axios = createAxiosClient();
 const moneyOutflowClient = new MoneyOutflowClient(axios);
 
 const moneyOutflowRoutes: RouteObject[] = [
     {
-        path: BASE_ROUTE,
+        path: MONEY_OUTFLOW_BASE_ROUTE,
         element: (<PrivateRoute>
             <ListMoneyOutflow client={moneyOutflowClient} />
         </PrivateRoute>)
     },
     {
-        path: `${BASE_ROUTE}/Register`,
+        path: `${MONEY_OUTFLOW_BASE_ROUTE}/Register`,
         element: (<PrivateRoute>
             <RegisterMoneyOutflow client={moneyOutflowClient} />
         </PrivateRoute>)

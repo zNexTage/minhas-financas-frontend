@@ -5,20 +5,20 @@ import createAxiosClient from "../factory/create-axios-client";
 import MoneyInflowClient from "../client/MoneyInflowClient";
 import PrivateRoute from "./private-route";
 
-const BASE_URL = "MoneyInflow";
+export const MONEY_INFLOW_BASE_URL = "MoneyInflow";
 
 const axios = createAxiosClient();
 const moneyInflowClient = new MoneyInflowClient(axios);
 
 const moneyInflowRoutes: RouteObject[] = [
     {
-        path: BASE_URL,
+        path: MONEY_INFLOW_BASE_URL,
         element: (<PrivateRoute>
             <ListMoneyInflow client={moneyInflowClient} />
         </PrivateRoute>)
     },
     {
-        path: `${BASE_URL}/Register`,
+        path: `${MONEY_INFLOW_BASE_URL}/Register`,
         element: (<PrivateRoute>
             <RegisterMoneyInflow client={moneyInflowClient} />
         </PrivateRoute>)
