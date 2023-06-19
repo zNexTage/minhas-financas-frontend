@@ -6,28 +6,25 @@ class AxiosClient implements IHttpClient {
     private axiosClient!: AxiosInstance;
     private BASE_URL = "http://localhost:5132/";
 
-
     /**
-     * Configuration the axios instance
+     * Config and get request headers
+     * @returns 
      */
-    private configuration() {
+    private getHeaders(): AxiosHeaders {
         const token = this.getToken();
         const headers: AxiosHeaders = new AxiosHeaders();
 
-        if (token) {
-            headers.setAuthorization(`Bearer ${token}`);
-        }
+        headers.setAuthorization(`Bearer ${token}`);
 
-        this.axiosClient = axios.create({
-            baseURL: this.BASE_URL,
-            headers: headers
-        });
+        return headers;
     }
 
     constructor(
         private getToken: () => string | null
     ) {
-        this.configuration();
+        this.axiosClient = axios.create({
+            baseURL: this.BASE_URL
+        });
     }
 
     async getById<T>(id: string | number, parameters: IHttpClientRequestParameters): Promise<T> {
@@ -44,7 +41,9 @@ class AxiosClient implements IHttpClient {
 
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await this.axiosClient.get<T>(url);
+                const response = await this.axiosClient.get<T>(url, {
+                    headers: this.getHeaders()
+                });
 
                 resolve(response.data);
             }
@@ -58,7 +57,11 @@ class AxiosClient implements IHttpClient {
 
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await this.axiosClient.post<T>(url, payload);
+                const response = await this.axiosClient.post<T>(
+                    url,
+                    payload, {
+                    headers: this.getHeaders()
+                });
 
                 resolve(response.data);
             }
