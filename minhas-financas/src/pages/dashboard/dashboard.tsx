@@ -1,4 +1,4 @@
-import { Card, Col, Container, Row } from "react-bootstrap"
+import { Alert, Card, Col, Container, Row } from "react-bootstrap"
 import { Link } from "react-router-dom";
 import { MONEY_INFLOW_BASE_URL } from "../../routes/money-inflow-routes";
 import { MONEY_OUTFLOW_BASE_ROUTE } from "../../routes/money-outflow-routes";
@@ -53,6 +53,10 @@ const Dashboard = ({
     }
 
     const numberFormat = new Intl.NumberFormat("pt-BR", { style: 'currency', currency: 'BRL' });
+
+    const balance = moneyInflowTotal - moneyOutflowTotal;
+
+    const profiting = balance > 0;
 
     return (
         <Container className="mt-5">
@@ -113,7 +117,9 @@ const Dashboard = ({
                     </Col>
                 </Row>
 
-
+                <Alert className="mt-3" variant={`${profiting ? "success" : "danger"}`}>
+                    {profiting ? "Lucro" : "Prejuízo"} de {numberFormat.format(balance)}
+                </Alert>
 
             </section>
         </Container>
