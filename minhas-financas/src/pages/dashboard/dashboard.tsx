@@ -4,6 +4,11 @@ import { MONEY_INFLOW_BASE_URL } from "../../routes/money-inflow-routes";
 import { MONEY_OUTFLOW_BASE_ROUTE } from "../../routes/money-outflow-routes";
 
 const Dashboard = () => {
+    const currentDate = new Date();
+
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+
     return (
         <Container className="mt-5">
             <h1>Dashboard</h1>
@@ -16,6 +21,9 @@ const Dashboard = () => {
                                 <Card.Title>
                                     Entrada de dinheiro
                                 </Card.Title>
+                                <Card.Subtitle>
+                                    Mês: {currentMonth}/{currentYear}
+                                </Card.Subtitle>
                             </Card.Header>
                             <Card.Body>
                                 <p className="m-0">
@@ -36,6 +44,9 @@ const Dashboard = () => {
                                 <Card.Title>
                                     Saída de dinheiro
                                 </Card.Title>
+                                <Card.Subtitle>
+                                    Mês: {currentMonth}/{currentYear}
+                                </Card.Subtitle>
                             </Card.Header>
                             <Card.Body>
                                 <p className="m-0">
