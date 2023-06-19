@@ -6,7 +6,7 @@ const BasePage = () => {
         <>
             <Navbar bg="dark" variant="dark">
                 <Container>
-                    <Navbar.Brand as={Link} to="MoneyOutflow">
+                    <Navbar.Brand as={Link} to="/Dashboard">
                         Minhas Finanças
                     </Navbar.Brand>
                 </Container>
