@@ -10,15 +10,26 @@ interface IProps {
 
 const ListMoneyOutflow = ({ client }: IProps) => {
     const [moneyOutflows, setMoneyOutflows] = useState<Array<MoneyOutflow>>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getMoneyOutflows();
     }, []);
 
     const getMoneyOutflows = async () => {
-        const moneyOutflows = await client.getAll();
+        setIsLoading(true);
 
-        setMoneyOutflows(moneyOutflows);
+        try {
+            const moneyOutflows = await client.getAll();
+
+            setMoneyOutflows(moneyOutflows);
+        }
+        catch (err) {
+            //TODO: Handle exception!!
+        }
+        finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -44,34 +55,53 @@ const ListMoneyOutflow = ({ client }: IProps) => {
                 </thead>
                 <tbody>
                     {
-                        moneyOutflows.map(moneyOutflow => (
-                            <tr key={moneyOutflow.id}>
-                                <td>
-                                    {moneyOutflow.date.toLocaleDateString()}
-                                </td>
-                                <td>
-                                    {moneyOutflow.description}
-                                </td>
-                                <td>
-                                    {moneyOutflow.getFormatedValue()}
-                                </td>
-                                <td>
-                                    {moneyOutflow.quantity}
-                                </td>
-                                <td>
-                                    {moneyOutflow.paymentMethod}
-                                </td>
-                                <td>
-                                    {moneyOutflow.paymentLocation}
-                                </td>
-                                <td>
-                                    {moneyOutflow.paymentCategory}
-                                </td>
-                                <td>
-                                    {moneyOutflow.getFormatedTotal()}
-                                </td>
-                            </tr>
-                        ))
+                        !isLoading &&
+                        <>
+                            {
+                                moneyOutflows.map(moneyOutflow => (
+                                    <tr key={moneyOutflow.id}>
+                                        <td>
+                                            {moneyOutflow.date.toLocaleDateString()}
+                                        </td>
+                                        <td>
+                                            {moneyOutflow.description}
+                                        </td>
+                                        <td>
+                                            {moneyOutflow.getFormatedValue()}
+                                        </td>
+                                        <td>
+                                            {moneyOutflow.quantity}
+                                        </td>
+                                        <td>
+                                            {moneyOutflow.paymentMethod}
+                                        </td>
+                                        <td>
+                                            {moneyOutflow.paymentLocation}
+                                        </td>
+                                        <td>
+                                            {moneyOutflow.paymentCategory}
+                                        </td>
+                                        <td>
+                                            {moneyOutflow.getFormatedTotal()}
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                            {moneyOutflows.length == 0 && (
+                                <tr>
+                                    <td className="text-center" colSpan={8}>
+                                        Nenhum registro encontrado
+                                    </td>
+                                </tr>
+                            )
+                            }
+                        </>
+                    }
+                    {isLoading && <tr>
+                        <td className="text-center" colSpan={8}>
+                            Aguarde...
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </Table>

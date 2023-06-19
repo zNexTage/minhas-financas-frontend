@@ -10,15 +10,26 @@ interface IProps {
 
 const ListMoneyInflow = ({ client }: IProps) => {
     const [moneyInflows, setMoneyInflows] = useState<Array<MoneyInflow>>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getAllMoneyInflows();
     }, []);
 
     const getAllMoneyInflows = async () => {
-        const response = await client.getAll();
+        setIsLoading(true);
 
-        setMoneyInflows(response);
+        try {
+            const response = await client.getAll();
+
+            setMoneyInflows(response);
+        }
+        catch (err) {
+            //TODO: Handle exception
+        }
+        finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -39,19 +50,38 @@ const ListMoneyInflow = ({ client }: IProps) => {
                 </thead>
                 <tbody>
                     {
-                        moneyInflows.map(moneyInflow => (
-                            <tr key={moneyInflow.id}>
-                                <td>
-                                    {moneyInflow.date.toLocaleDateString()}
-                                </td>
-                                <td>
-                                    {moneyInflow.description}
-                                </td>
-                                <td>
-                                    {moneyInflow.getFormatedValue()}
-                                </td>
-                            </tr>
-                        ))
+                        !isLoading &&
+                        <>
+                            {
+                                moneyInflows.map(moneyInflow => (
+                                    <tr key={moneyInflow.id}>
+                                        <td>
+                                            {moneyInflow.date.toLocaleDateString()}
+                                        </td>
+                                        <td>
+                                            {moneyInflow.description}
+                                        </td>
+                                        <td>
+                                            {moneyInflow.getFormatedValue()}
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                            {moneyInflows.length == 0 && (
+                                <tr>
+                                    <td className="text-center" colSpan={3}>
+                                        Nenhum registro encontrado
+                                    </td>
+                                </tr>
+                            )
+                            }
+                        </>
+                    }
+                    {isLoading && <tr>
+                        <td className="text-center" colSpan={3}>
+                            Nenhum registro encontrado
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </Table>
