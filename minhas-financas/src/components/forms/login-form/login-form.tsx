@@ -1,13 +1,24 @@
 import { Alert, Button, Card, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import UserLogin from "../../../entities/UserLogin";
+import { useState } from "react";
 
 interface IProps {
     onSubmit: (data: UserLogin) => Promise<void>;
 }
 
 const LoginForm = ({ onSubmit }: IProps) => {
+    const [isLoading, setIsLoading] = useState(false);
+
     const { register, handleSubmit, formState: { errors } } = useForm<UserLogin>();
+
+    const processSubmit = async (data:UserLogin) => {
+        setIsLoading(true);
+
+        await onSubmit(data);
+
+        setIsLoading(false);
+    }
 
     return (
         <Card>
@@ -15,7 +26,7 @@ const LoginForm = ({ onSubmit }: IProps) => {
                 Preencha os campos para se autenticar
             </Card.Header>
             <Card.Body>
-                <Form onSubmit={handleSubmit(onSubmit)}>
+                <Form onSubmit={handleSubmit(processSubmit)}>
                     <div>
                         <Form.Label>
                             Nome de usuário
@@ -55,8 +66,8 @@ const LoginForm = ({ onSubmit }: IProps) => {
                         }
                     </div>
 
-                    <Button type="submit" className="mt-2">
-                        Acessar
+                    <Button disabled={isLoading} type="submit" className="mt-2">
+                        {!isLoading ? "Acessar" : "Aguarde..."}
                     </Button>
                 </Form>
             </Card.Body>
