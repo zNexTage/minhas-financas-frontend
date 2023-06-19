@@ -21,7 +21,7 @@ class MoneyOutflowClient {
      * @returns A list of MoneyOutflow
      */
     async getAll(): Promise<Array<MoneyOutflow>> {
-        const response = await this.client.getAll<Array<MoneyOutflowDto>>({ url: this.BASE_URL });
+        const response = await this.client.get<Array<MoneyOutflowDto>>({ url: this.BASE_URL });
 
         const moneyOutflows = response.map(dto => this.mapper.fromDto(dto));
 
@@ -35,6 +35,14 @@ class MoneyOutflowClient {
         });
 
         return this.mapper.fromDto(response);
+    }
+
+    async getTotalByPeriod(month: number, year: number): Promise<number> {
+        const total = await this.client.get<number>({
+            url: `${this.BASE_URL}/TotalByPeriod?month=${month}&year=${year}`
+        });
+
+        return total;
     }
 }
 
