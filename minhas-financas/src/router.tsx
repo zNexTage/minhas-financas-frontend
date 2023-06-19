@@ -10,8 +10,11 @@ import RegisterMoneyInflow from "./pages/money-inflow/register-money-inflow";
 import Login from "./pages/login";
 import UserClient from "./client/UserClient";
 import Dashboard from "./pages/dashboard";
+import useTokenStorage from "./hooks/token/use-token-storage";
 
-const axios = new AxiosClient();
+const {getToken} = useTokenStorage();
+
+const axios = new AxiosClient(getToken);
 const moneyOutflowClient = new MoneyOutflowClient(axios);
 
 const moneyInflowClient = new MoneyInflowClient(axios);

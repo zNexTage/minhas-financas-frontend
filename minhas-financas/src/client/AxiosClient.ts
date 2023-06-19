@@ -6,6 +6,7 @@ class AxiosClient implements IHttpClient {
     private axiosClient!: AxiosInstance;
     private BASE_URL = "http://localhost:5132/";
 
+
     /**
      * Configuration the axios instance
      */
@@ -23,16 +24,9 @@ class AxiosClient implements IHttpClient {
         });
     }
 
-    /**
-     * 
-     * @returns 
-     */
-    private getToken(): string | null {
-        //TODO: Retrive token from localstorage
-        return "";
-    }
-
-    constructor() {
+    constructor(
+        private getToken: () => string | null
+    ) {
         this.configuration();
     }
 
@@ -45,7 +39,7 @@ class AxiosClient implements IHttpClient {
      * @param parameters 
      * @returns 
      */
-    async getAll<T>(parameters: IHttpClientRequestParameters): Promise<T> {        
+    async getAll<T>(parameters: IHttpClientRequestParameters): Promise<T> {
         const { url } = parameters;
 
         return new Promise(async (resolve, reject) => {
@@ -60,7 +54,18 @@ class AxiosClient implements IHttpClient {
         })
     }
     async post<T>(parameters: IHttpClientRequestParameters): Promise<T> {
-        throw new Error("Method not implemented.");
+        const { url, payload } = parameters;
+
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await this.axiosClient.post<T>(url, payload);
+
+                resolve(response.data);
+            }
+            catch (err) {
+                reject(err);
+            }
+        })
     }
     async patch<T>(id: string | number, parameters: IHttpClientRequestParameters): Promise<T> {
         throw new Error("Method not implemented.");
