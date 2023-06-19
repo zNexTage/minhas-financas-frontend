@@ -39,7 +39,7 @@ class AxiosClient implements IHttpClient {
      * @param parameters 
      * @returns 
      */
-    async getAll<T>(parameters: IHttpClientRequestParameters): Promise<T> {
+    async get<T>(parameters: IHttpClientRequestParameters): Promise<T> {
         const { url } = parameters;
 
         return new Promise(async (resolve, reject) => {
