@@ -117,9 +117,10 @@ const Dashboard = ({
                     </Col>
                 </Row>
 
-                <Alert className="mt-3" variant={`${profiting ? "success" : "danger"}`}>
+                {balance != 0 && <Alert className="mt-3" variant={`${profiting ? "success" : "danger"}`}>
                     {profiting ? "Lucro" : "Prejuízo"} de {numberFormat.format(balance)}
                 </Alert>
+                }
 
             </section>
         </Container>
