@@ -32,6 +32,13 @@ const ListMoneyInflow = ({ client }: IProps) => {
         }
     }
 
+    const calcTotalMoneyInflows = (moneyInflows: Array<MoneyInflow>) => {
+        const total = moneyInflows.reduce<number>((previousValue, currentValue: MoneyInflow) => previousValue + currentValue.value, 0);
+        const nFormat = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+
+        return nFormat.format(total);
+    }
+
     return (
         <Container className="mt-5">
             <h1>
@@ -53,19 +60,27 @@ const ListMoneyInflow = ({ client }: IProps) => {
                         !isLoading &&
                         <>
                             {
-                                moneyInflows.map(moneyInflow => (
-                                    <tr key={moneyInflow.id}>
-                                        <td>
-                                            {moneyInflow.date.toLocaleDateString()}
-                                        </td>
-                                        <td>
-                                            {moneyInflow.description}
-                                        </td>
-                                        <td>
-                                            {moneyInflow.getFormatedValue()}
+                                moneyInflows.length > 0 &&
+                                <>
+                                    {moneyInflows.map(moneyInflow => (
+                                        <tr key={moneyInflow.id}>
+                                            <td>
+                                                {moneyInflow.date.toLocaleDateString()}
+                                            </td>
+                                            <td>
+                                                {moneyInflow.description}
+                                            </td>
+                                            <td>
+                                                {moneyInflow.getFormatedValue()}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    <tr>
+                                        <td className="text-end" colSpan={3}>
+                                            Total  {calcTotalMoneyInflows(moneyInflows)}
                                         </td>
                                     </tr>
-                                ))
+                                </>
                             }
                             {moneyInflows.length == 0 && (
                                 <tr>

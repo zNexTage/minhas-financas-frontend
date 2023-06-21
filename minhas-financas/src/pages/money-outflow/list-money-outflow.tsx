@@ -32,6 +32,13 @@ const ListMoneyOutflow = ({ client }: IProps) => {
         }
     }
 
+    const calcTotalMoneyOutflows = (moneyInflows: Array<MoneyOutflow>) => {
+        const total = moneyInflows.reduce<number>((previousValue, currentValue: MoneyOutflow) => previousValue + currentValue.value, 0);
+        const nFormat = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+
+        return nFormat.format(total);
+    }
+
     return (
         <Container className="mt-5">
             <h1>
@@ -58,34 +65,44 @@ const ListMoneyOutflow = ({ client }: IProps) => {
                         !isLoading &&
                         <>
                             {
-                                moneyOutflows.map(moneyOutflow => (
-                                    <tr key={moneyOutflow.id}>
-                                        <td>
-                                            {moneyOutflow.date.toLocaleDateString()}
-                                        </td>
-                                        <td>
-                                            {moneyOutflow.description}
-                                        </td>
-                                        <td>
-                                            {moneyOutflow.getFormatedValue()}
-                                        </td>
-                                        <td>
-                                            {moneyOutflow.quantity}
-                                        </td>
-                                        <td>
-                                            {moneyOutflow.paymentMethod}
-                                        </td>
-                                        <td>
-                                            {moneyOutflow.paymentLocation}
-                                        </td>
-                                        <td>
-                                            {moneyOutflow.paymentCategory}
-                                        </td>
-                                        <td>
-                                            {moneyOutflow.getFormatedTotal()}
+                                moneyOutflows.length > 0 &&
+                                <>
+                                    {
+                                        moneyOutflows.map(moneyOutflow => (
+                                            <tr key={moneyOutflow.id}>
+                                                <td>
+                                                    {moneyOutflow.date.toLocaleDateString()}
+                                                </td>
+                                                <td>
+                                                    {moneyOutflow.description}
+                                                </td>
+                                                <td>
+                                                    {moneyOutflow.getFormatedValue()}
+                                                </td>
+                                                <td>
+                                                    {moneyOutflow.quantity}
+                                                </td>
+                                                <td>
+                                                    {moneyOutflow.paymentMethod}
+                                                </td>
+                                                <td>
+                                                    {moneyOutflow.paymentLocation}
+                                                </td>
+                                                <td>
+                                                    {moneyOutflow.paymentCategory}
+                                                </td>
+                                                <td>
+                                                    {moneyOutflow.getFormatedTotal()}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                    <tr>                                        
+                                        <td colSpan={8} className="text-end">
+                                            Total -{calcTotalMoneyOutflows(moneyOutflows)}
                                         </td>
                                     </tr>
-                                ))
+                                </>
                             }
                             {moneyOutflows.length == 0 && (
                                 <tr>
