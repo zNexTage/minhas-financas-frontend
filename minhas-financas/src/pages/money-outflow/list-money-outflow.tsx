@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Table } from "react-bootstrap";
+import { Container, Table } from "react-bootstrap";
 import MoneyOutflow from "../../entities/MoneyOutflow";
 import MoneyOutflowClient from "../../client/MoneyOutflowClient";
 import { Link } from "react-router-dom";
+import MoneyOutflowChart from "../../components/charts/money-outflow-chart";
 
 interface IProps {
     client: MoneyOutflowClient;
@@ -97,7 +98,7 @@ const ListMoneyOutflow = ({ client }: IProps) => {
                                             </tr>
                                         ))
                                     }
-                                    <tr>                                        
+                                    <tr>
                                         <td colSpan={8} className="text-end">
                                             Total -{calcTotalMoneyOutflows(moneyOutflows)}
                                         </td>
@@ -122,6 +123,12 @@ const ListMoneyOutflow = ({ client }: IProps) => {
                     }
                 </tbody>
             </Table>
+
+            {(!isLoading && moneyOutflows.length > 0) &&
+                <div className="p-5 m-auto" style={{maxWidth: 600}}>
+                    <MoneyOutflowChart moneyOutflows={moneyOutflows} />
+                </div>
+                }
         </Container>
     );
 }
