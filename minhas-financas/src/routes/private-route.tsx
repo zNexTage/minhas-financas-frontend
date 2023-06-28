@@ -1,6 +1,11 @@
-import React, { useEffect } from "react"
+import React from "react"
 import useTokenStorage from "../hooks/token/use-token-storage"
 import { Navigate } from "react-router-dom";
+import * as dayjs from "dayjs";
+import "dayjs/locale/pt-br";
+
+dayjs.locale("pt-br");
+
 
 interface IProps {
     children: React.ReactNode
@@ -14,27 +19,34 @@ interface IProps {
  * @returns 
  */
 const PrivateRoute = ({ children }: IProps) => {
-    const { getToken } = useTokenStorage();
+    const { getToken, removeToken } = useTokenStorage();
 
     const token = getToken();
 
-    const isAuthenticated = !!token;
+    if (!token) {
+        alert("Sua sessão expirou. Você precisa se autenticar novamente!");
 
-    useEffect(()=>{
-        return () => {
-            if(!isAuthenticated){
-                alert("Sua sessão expirou. Você precisa se autenticar novamente!");
-            }
-        }
-    }, []);
-
-    return (
-        isAuthenticated ?
-            children :
+        return (
             <Navigate
                 to={"/Login"}
                 replace
             />
+        )
+    };
+
+    if (!!token && dayjs().isAfter(token.expiresIn)) {
+        removeToken();
+
+        return (
+            <Navigate
+            to={"/Login"}
+            replace
+        />
+        )
+    } 
+
+    return (
+        children
     )
 }
 
