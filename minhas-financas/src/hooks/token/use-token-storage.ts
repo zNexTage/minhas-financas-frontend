@@ -1,3 +1,5 @@
+import TokenDto from "../../dto/TokenDto";
+
 const useTokenStorage = () => {
     const TOKEN_KEY = 'MinhasFinancasTokenKey';
 
@@ -5,19 +7,28 @@ const useTokenStorage = () => {
      * Save token in localstorage
      * @param token 
      */
-    const setToken = (token:string): void => {
-        localStorage.setItem(TOKEN_KEY, token);
+    const setToken = (tokenDto: TokenDto): void => {
+        localStorage.setItem(TOKEN_KEY, JSON.stringify(tokenDto));
     }
 
     /**
      * Get token from localstorage
      * @returns 
      */
-    const getToken = () => localStorage.getItem(TOKEN_KEY);
+    const getToken = (): TokenDto | null => {
+        const tokenDto = localStorage.getItem(TOKEN_KEY);
+
+        if (!tokenDto) return null;
+
+        return JSON.parse(tokenDto) as TokenDto;
+    }
+
+    const removeToken = () => localStorage.removeItem(TOKEN_KEY);
 
     return {
         setToken,
-        getToken
+        getToken,
+        removeToken
     }
 }
 

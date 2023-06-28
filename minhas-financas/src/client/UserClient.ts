@@ -1,3 +1,4 @@
+import TokenDto from "../dto/TokenDto";
 import UserLogin from "../entities/UserLogin";
 import IHttpClient from "./providers/IHttpClient";
 
@@ -10,8 +11,8 @@ class UserClient {
 
     }
 
-    async login(userLogin: UserLogin): Promise<string> {
-        const token = await this.client.post<string>(
+    async login(userLogin: UserLogin): Promise<TokenDto> {
+        const token = await this.client.post<TokenDto>(
             {
                 url: `${this.BASE_URL}/Login`,
                 payload: userLogin

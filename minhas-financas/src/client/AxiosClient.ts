@@ -1,6 +1,7 @@
 import axios, { AxiosHeaders, AxiosInstance } from "axios";
 import IHttpClient from "./providers/IHttpClient";
 import IHttpClientRequestParameters from "./providers/IHttpClientRequestParameters";
+import TokenDto from "../dto/TokenDto";
 
 class AxiosClient implements IHttpClient {
     private axiosClient!: AxiosInstance;
@@ -11,20 +12,22 @@ class AxiosClient implements IHttpClient {
      * @returns 
      */
     private getHeaders(): AxiosHeaders {
-        const token = this.getToken();
+        const tokenDto = this.getToken();
         const headers: AxiosHeaders = new AxiosHeaders();
 
-        headers.setAuthorization(`Bearer ${token}`);
+        if(tokenDto){
+            headers.setAuthorization(`Bearer ${tokenDto.token}`);
+        }            
 
         return headers;
     }
 
     constructor(
-        private getToken: () => string | null
+        private getToken: () => TokenDto | null
     ) {
         this.axiosClient = axios.create({
             baseURL: this.BASE_URL
-        });
+        });        
     }
 
     async getById<T>(id: string | number, parameters: IHttpClientRequestParameters): Promise<T> {
