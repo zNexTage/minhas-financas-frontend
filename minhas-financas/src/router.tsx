@@ -8,6 +8,7 @@ import PrivateRoute from "./routes/private-route";
 import MoneyInflowClient from "./client/MoneyInflowClient";
 import createAxiosClient from "./factory/create-axios-client";
 import MoneyOutflowClient from "./client/MoneyOutflowClient";
+import fixedExpenseRoutes from "./routes/fixed-expense-routes";
 
 const axios = createAxiosClient();
 
@@ -31,7 +32,8 @@ const router = createBrowserRouter([
             },
             ...userRoutes,
             ...moneyOutflowRoutes,
-            ...moneyInflowRoutes
+            ...moneyInflowRoutes,
+            ...fixedExpenseRoutes
         ]
     },
 ])

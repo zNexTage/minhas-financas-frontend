@@ -5,6 +5,7 @@ import { MONEY_OUTFLOW_BASE_ROUTE } from "../../routes/money-outflow-routes";
 import MoneyInflowClient from "../../client/MoneyInflowClient";
 import MoneyOutflowClient from "../../client/MoneyOutflowClient";
 import { useEffect, useState } from "react";
+import { FIXED_EXPENSE_BASE_URL } from "../../routes/fixed-expense-routes";
 
 interface IProps {
     moneyInflowClient: MoneyInflowClient,
@@ -80,11 +81,10 @@ const Dashboard = ({
                                     Total: {numberFormat.format(moneyInflowTotal)}
                                 </p>}
                             </Card.Body>
-                            <Card.Footer
-                                className="text-center"
-                                as={Link}
-                                to={`/${MONEY_INFLOW_BASE_URL}`}>
-                                Acessar
+                            <Card.Footer className="text-center">
+                                <Link className="btn btn-link" to={`/${MONEY_INFLOW_BASE_URL}`}>
+                                    Acessar
+                                </Link>
                             </Card.Footer>
                         </Card>
                     </Col>
@@ -108,10 +108,19 @@ const Dashboard = ({
                                 }
                             </Card.Body>
                             <Card.Footer
-                                className="text-center"
-                                as={Link}
-                                to={`/${MONEY_OUTFLOW_BASE_ROUTE}`}>
-                                Acessar
+                                className="d-flex justify-content-around"
+                            >
+                                <Link className="btn btn-link" to={`/${MONEY_OUTFLOW_BASE_ROUTE}`}>
+                                    Acessar
+                                </Link>
+
+                                <Link className="btn btn-link" to={`/${MONEY_OUTFLOW_BASE_ROUTE}/Register`}>
+                                    Registrar nova saída
+                                </Link>
+
+                                <Link className="btn btn-link" to={`/${FIXED_EXPENSE_BASE_URL}/Register`}>
+                                    Registrar gasto fixo
+                                </Link>
                             </Card.Footer>
                         </Card>
                     </Col>
