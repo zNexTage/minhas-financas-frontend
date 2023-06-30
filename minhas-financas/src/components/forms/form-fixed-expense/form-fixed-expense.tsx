@@ -1,4 +1,4 @@
-import { Button, Card, Form } from "react-bootstrap"
+import { Alert, Button, Card, Form } from "react-bootstrap"
 import { useForm } from "react-hook-form";
 import FixedExpenseDto from "../../../dto/FixedExpenseDto";
 
@@ -12,7 +12,18 @@ interface IProps {
  * @returns 
  */
 const FormFixedExpense = ({ onSubmit }: IProps) => {
-    const { register, handleSubmit } = useForm<FixedExpenseDto>();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset
+    } = useForm<FixedExpenseDto>();
+
+    const processSubmit = async (data: FixedExpenseDto): Promise<void> => {
+        await onSubmit(data);
+
+        reset();
+    }
 
 
     return (
@@ -26,7 +37,7 @@ const FormFixedExpense = ({ onSubmit }: IProps) => {
                 <p>
                     Um gasto fixo é uma despesa que você tem todo mês, como aluguel, conta de luz, conta de água... Os gastos registrados aqui irão aparecer todos os meses na sua <b>lista de saídas</b>, onde você poderá registrar quando efetuou o pagamento dessas dívidas.
                 </p>
-                <Form onSubmit={handleSubmit(onSubmit)}>
+                <Form onSubmit={handleSubmit(processSubmit)}>
                     <div>
                         <Form.Label
                             htmlFor="txtDescription">
@@ -46,6 +57,13 @@ const FormFixedExpense = ({ onSubmit }: IProps) => {
                             placeholder="Aluguel"
                             id="txtDescription"
                         />
+
+                        {
+                            errors.description &&
+                            <Alert>
+                                {errors.description.message}
+                            </Alert>
+                        }
                     </div>
 
                     <div>
@@ -64,6 +82,13 @@ const FormFixedExpense = ({ onSubmit }: IProps) => {
                         <Form.Text className="text-muted">
                             Informe apenas se o valor for fixo, por exemplo: o valor do aluguel. Gastos que o valor tendem a mudar em cada mês, como contas, não há necessidade de registrar o valor aqui.
                         </Form.Text>
+
+                        {
+                            errors.value &&
+                            <Alert>
+                                {errors.value.message}
+                            </Alert>
+                        }
                     </div>
 
                     <div>
@@ -84,9 +109,16 @@ const FormFixedExpense = ({ onSubmit }: IProps) => {
                             <option value="Alimentação">Alimentação</option>
                             <option value="Outros">Outros</option>
                         </Form.Select>
+
+                        {
+                            errors.paymentCategory &&
+                            <Alert>
+                                {errors.paymentCategory.message}
+                            </Alert>
+                        }
                     </div>
 
-                    <Button className="mt-2">
+                    <Button type="submit" className="mt-2">
                         Salvar
                     </Button>
                 </Form>

@@ -1,10 +1,18 @@
 import { Container } from "react-bootstrap";
 import FormFixedExpense from "../../components/forms/form-fixed-expense";
 import FixedExpenseDto from "../../dto/FixedExpenseDto";
+import FixedExpenseClient from "../../client/FixedExpenseClient";
 
-const RegisterFixedExpense = () => {
-    const onSubmit = (data: FixedExpenseDto): Promise<void> => {
-        throw new Error("Not implemented");
+interface IProps {
+    client: FixedExpenseClient
+}
+
+const RegisterFixedExpense = ({ client }: IProps) => {
+    const onSubmit = async (data: FixedExpenseDto): Promise<void> => {
+        debugger
+        await client.register(data);
+
+        alert("Gasto fixo registrado com sucesso");
     }
 
     return (
