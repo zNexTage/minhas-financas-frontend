@@ -17,7 +17,7 @@ const FormMoneyOutflow = ({ onSubmit }: IProps) => {
     return (
         <Card>
             <Card.Header>
-                <b>Saída de dinheiro | Registro</b>
+                <b>Preencha os campos para registrar um gasto</b>
             </Card.Header>
             <Card.Body>
                 <Form onSubmit={handleSubmit(processSubmit)}>
