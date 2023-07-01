@@ -20,6 +20,8 @@ const FormFixedExpense = ({ onSubmit }: IProps) => {
     } = useForm<FixedExpenseDto>();
 
     const processSubmit = async (data: FixedExpenseDto): Promise<void> => {
+        data.value = data.value || 0;
+
         await onSubmit(data);
 
         reset();
@@ -73,7 +75,7 @@ const FormFixedExpense = ({ onSubmit }: IProps) => {
                         </Form.Label>
                         <Form.Control
                             {...register("value", {
-                                valueAsNumber: true
+                                valueAsNumber: true,
                             })}
                             placeholder="(Opcional) Informe um valor"
                             type="number"
