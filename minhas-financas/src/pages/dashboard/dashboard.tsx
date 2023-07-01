@@ -118,8 +118,8 @@ const Dashboard = ({
                                     Registrar nova saída
                                 </Link>
 
-                                <Link className="btn btn-link" to={`/${FIXED_EXPENSE_BASE_URL}/Register`}>
-                                    Registrar gasto fixo
+                                <Link className="btn btn-link" to={`/${FIXED_EXPENSE_BASE_URL}`}>
+                                    Gastos fixos
                                 </Link>
                             </Card.Footer>
                         </Card>

@@ -22,6 +22,12 @@ class FixedExpenseClient {
 
         return await this.client.post<FixedExpense>(requestParams);            
     }
+
+    async getAll():Promise<FixedExpense[]> {
+        return await this.client.get({
+            url: this.BASE_URL
+        });
+    }
 }
 
 export default FixedExpenseClient;
