@@ -1,35 +1,63 @@
 import { useEffect, useState } from "react";
-import { Container, Table } from "react-bootstrap";
+import { Button, Container, Table } from "react-bootstrap";
 import MoneyOutflow from "../../entities/MoneyOutflow";
 import MoneyOutflowClient from "../../client/MoneyOutflowClient";
 import { Link } from "react-router-dom";
 import MoneyOutflowChart from "../../components/charts/money-outflow-chart";
+import dayjs from "dayjs";
+
+dayjs.locale("pt-br");
+import "dayjs/locale/pt-br";
+import FixedExpenseTable from "../../components/tables/fixed-expense-table";
+import FixedExpense from "../../entities/FixedExpense";
+import FixedExpenseClient from "../../client/FixedExpenseClient";
 
 interface IProps {
-    client: MoneyOutflowClient;
+    outflowClient: MoneyOutflowClient;
+    fixedExpenseClient: FixedExpenseClient;
 }
 
-const ListMoneyOutflow = ({ client }: IProps) => {
+const ListMoneyOutflow = ({ outflowClient, fixedExpenseClient }: IProps) => {
     const [moneyOutflows, setMoneyOutflows] = useState<Array<MoneyOutflow>>([]);
+    const [fixedExpenses, setFixedExpenses] = useState<Array<FixedExpense>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        getMoneyOutflows();
+        setIsLoading(true);
+
+        Promise.all([
+            getMoneyOutflows(),
+            getFixedExpenses()
+        ])
+            .catch(err => {
+                alert("Não foi possível obter as saídas e os gastos fixos");
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
     }, []);
 
     const getMoneyOutflows = async () => {
-        setIsLoading(true);
 
         try {
-            const moneyOutflows = await client.getAll();
+            const moneyOutflows = await outflowClient.getAll();
 
             setMoneyOutflows(moneyOutflows);
         }
         catch (err) {
             //TODO: Handle exception!!
         }
-        finally {
-            setIsLoading(false);
+
+    }
+
+    const getFixedExpenses = async () => {
+        try {
+            const fixedExpensives = await fixedExpenseClient.getAll();
+
+            setFixedExpenses(fixedExpensives);
+        }
+        catch (err) {
+            //TODO: Handle exception!!
         }
     }
 
@@ -42,12 +70,19 @@ const ListMoneyOutflow = ({ client }: IProps) => {
 
     return (
         <Container className="mt-5">
-            <h1>
-                Saída de dinheiro
-            </h1>
+            <div className="d-flex justify-content-between">
+                <h1>
+                    Saída de dinheiro
+                </h1>
+                <h1>
+                    {dayjs().format("MM/YYYY")}
+                </h1>
+            </div>
+
             <Link to={"/MoneyOutflow/Register"} className="btn btn-info text-white">
                 Adicionar saída
             </Link>
+
             <Table striped bordered hover size="lg" className="mt-2">
                 <thead>
                     <tr>
@@ -124,11 +159,27 @@ const ListMoneyOutflow = ({ client }: IProps) => {
                 </tbody>
             </Table>
 
+            <FixedExpenseTable
+                fixedExpenses={fixedExpenses}
+                isLoading={isLoading}
+                newColumns={[
+                    {
+                        columnName: "Confirmar",
+                        columnElement: (fixedExpense) => <Button
+                            variant="info"
+                            className="w-100 text-light"
+                            onClick={() => alert(fixedExpense.id)}>
+                            Confirmar
+                        </Button>
+                    }
+                ]}
+            />
+
             {(!isLoading && moneyOutflows.length > 0) &&
-                <div className="p-5 m-auto" style={{maxWidth: 600}}>
+                <div className="p-5 m-auto" style={{ maxWidth: 600 }}>
                     <MoneyOutflowChart moneyOutflows={moneyOutflows} />
                 </div>
-                }
+            }
         </Container>
     );
 }
