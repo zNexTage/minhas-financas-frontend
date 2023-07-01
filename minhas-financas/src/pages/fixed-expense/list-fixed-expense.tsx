@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FIXED_EXPENSE_BASE_URL } from "../../routes/fixed-expense-routes";
 import { useEffect, useState } from "react";
 import FixedExpense from "../../entities/FixedExpense";
+import FixedExpenseTable from "../../components/tables/fixed-expense-table";
 
 interface IProps {
     client: FixedExpenseClient
@@ -50,61 +51,10 @@ const ListFixedExpense = ({ client }: IProps) => {
                 Adicionar gasto fixo
             </Link>
 
-            <Table striped bordered hover size="lg" className="mt-2">
-                <thead>
-                    <tr>
-                        <th>
-                            Descrição
-                        </th>
-                        <th>
-                            Valor
-                        </th>
-                        <th>
-                            Categoria
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {!isLoading &&
-                        <>
-                            {
-                                fixedExpenses.length > 0 &&
-                                fixedExpenses.map(fixedExpense => (
-                                    <tr key={fixedExpense.id}>
-                                        <td>{fixedExpense.description}</td>
-                                        <td>{
-                                            fixedExpense.value ?
-                                                numberFormat.format(fixedExpense.value)
-                                                :
-                                                "-"
-                                        }
-                                        </td>
-                                        <td>{fixedExpense.paymentCategory}</td>
-                                    </tr>
-                                ))
-                            }
-                            {fixedExpenses.length == 0 &&
-                                <tr>
-                                    <td
-                                        className="text-center"
-                                        colSpan={3}>
-                                        Nenhum registro encontrado
-                                    </td>
-                                </tr>
-                            }
-                        </>
-                    }
-                    {isLoading && <tr>
-                        <td
-                            className="text-center"
-                            colSpan={3}>
-                            Aguarde
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </Table>
+            <FixedExpenseTable
+                fixedExpenses={fixedExpenses}
+                isLoading={isLoading}
+            />            
         </Container>
     )
 }
