@@ -34,7 +34,7 @@ const ListMoneyOutflow = ({ client }: IProps) => {
     }
 
     const calcTotalMoneyOutflows = (moneyInflows: Array<MoneyOutflow>) => {
-        const total = moneyInflows.reduce<number>((previousValue, currentValue: MoneyOutflow) => previousValue + currentValue.value, 0);
+        const total = moneyInflows.reduce<number>((previousValue, currentValue: MoneyOutflow) => previousValue + (currentValue.value * currentValue.quantity), 0);
         const nFormat = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
         return nFormat.format(total);
