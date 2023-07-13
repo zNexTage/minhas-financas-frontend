@@ -65,6 +65,7 @@ const FormMoneyInflow = ({ onSubmit }: IProps) => {
                             placeholder="Qual o valor recebido?"
                             id="txtValue"
                             type="number"
+                            step={"any"}
                         />
                         {errors.value &&
                             <Alert className="mt-2" variant="danger">

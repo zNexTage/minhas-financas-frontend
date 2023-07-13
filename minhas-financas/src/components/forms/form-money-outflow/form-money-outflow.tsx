@@ -63,6 +63,7 @@ const FormMoneyOutflow = ({ onSubmit }: IProps) => {
                             placeholder="Quanto foi gasto?"
                             id="txtValue"
                             type="number"
+                            step={"any"}
                         />
                         {errors.value &&
                             <Alert className="mt-2" variant="danger">

@@ -80,6 +80,7 @@ const FormFixedExpense = ({ onSubmit }: IProps) => {
                             placeholder="(Opcional) Informe um valor"
                             type="number"
                             id="txtValue"
+                            step={"any"}
                         />
                         <Form.Text className="text-muted">
                             Informe apenas se o valor for fixo, por exemplo: o valor do aluguel. Gastos que o valor tendem a mudar em cada mês, como contas, não há necessidade de registrar o valor aqui.
