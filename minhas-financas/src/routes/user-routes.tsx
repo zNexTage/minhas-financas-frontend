@@ -8,7 +8,7 @@ const userClient = new UserClient(axios);
 
 const userRoutes: RouteObject[] = [
     {
-        path: `Login`,
+        path: ``,
         element: <Login client={userClient} />
     }
 ];

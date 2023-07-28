@@ -28,7 +28,7 @@ const PrivateRoute = ({ children }: IProps) => {
 
         return (
             <Navigate
-                to={"/Login"}
+                to={"/"}
                 replace
             />
         )
@@ -39,7 +39,7 @@ const PrivateRoute = ({ children }: IProps) => {
 
         return (
             <Navigate
-            to={"/Login"}
+            to={"/"}
             replace
         />
         )
