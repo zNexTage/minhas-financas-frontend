@@ -5,7 +5,7 @@ import TokenDto from "../dto/TokenDto";
 
 class AxiosClient implements IHttpClient {
     private axiosClient!: AxiosInstance;
-    private BASE_URL = "http://localhost:5132/";
+    private BASE_URL = import.meta.env.PROD ? "https://localhost:7039/" : "http://localhost:5001/";
 
     /**
      * Config and get request headers
@@ -31,6 +31,7 @@ class AxiosClient implements IHttpClient {
     }
 
     async getById<T>(id: string | number, parameters: IHttpClientRequestParameters): Promise<T> {
+        console.log(`${id} - ${parameters}`);
         throw new Error("Method not implemented.");
     }
 
@@ -74,9 +75,11 @@ class AxiosClient implements IHttpClient {
         })
     }
     async patch<T>(id: string | number, parameters: IHttpClientRequestParameters): Promise<T> {
+        console.log(`${id} - ${parameters}`);
         throw new Error("Method not implemented.");
     }
     async put<T>(id: string | number, parameters: IHttpClientRequestParameters): Promise<T> {
+        console.log(`${id} - ${parameters}`);
         throw new Error("Method not implemented.");
     }
 
