@@ -1,7 +1,7 @@
 import React from "react"
 import useTokenStorage from "../hooks/token/use-token-storage"
 import { Navigate } from "react-router-dom";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 
 dayjs.locale("pt-br");
