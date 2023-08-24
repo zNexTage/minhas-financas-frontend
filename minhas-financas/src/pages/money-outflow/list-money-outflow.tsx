@@ -4,6 +4,7 @@ import MoneyOutflow from "../../entities/MoneyOutflow";
 import MoneyOutflowClient from "../../client/MoneyOutflowClient";
 import { Link } from "react-router-dom";
 import MoneyOutflowChart from "../../components/charts/money-outflow-chart";
+import MoneyOutflowDto from "../../dto/MoneyOutflowDto";
 import dayjs from "dayjs";
 
 dayjs.locale("pt-br");
@@ -66,6 +67,28 @@ const ListMoneyOutflow = ({ outflowClient, fixedExpenseClient }: IProps) => {
         const nFormat = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
         return nFormat.format(total);
+    }
+
+    const confirmPaymentFixedExpense = async (fixedId: number) => {
+        const fixedExpense = fixedExpenses.find(fixed => fixed.id == fixedId)!;
+
+        const outflowDto = new MoneyOutflowDto(
+            fixedExpense.description,
+            fixedExpense.value!,
+            0,
+            "Débito",
+            "Nubank",
+            fixedExpense.paymentCategory,
+            dayjs().format("YYYY-MM-DD"),
+        )
+        try {
+            const moneyOutflow = await outflowClient.register(outflowDto)
+
+            setMoneyOutflows([...moneyOutflows, moneyOutflow]);
+        }
+        catch (err) {
+            alert("Não foi possível confirmar o pagamento do gasto fixo.");
+        }
     }
 
     return (
@@ -168,7 +191,7 @@ const ListMoneyOutflow = ({ outflowClient, fixedExpenseClient }: IProps) => {
                         columnElement: (fixedExpense) => <Button
                             variant="info"
                             className="w-100 text-light"
-                            onClick={() => alert(fixedExpense.id)}>
+                            onClick={() => confirmPaymentFixedExpense(fixedExpense.id)}>
                             Confirmar
                         </Button>
                     }

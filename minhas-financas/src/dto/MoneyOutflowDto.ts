@@ -1,6 +1,6 @@
 class MoneyOutflowDto {   
 
-    private constructor(
+    constructor(
         public description: string,
         public value: number,
         public quantity: number,
@@ -15,3 +15,5 @@ class MoneyOutflowDto {
     
     
 }
+
+export default MoneyOutflowDto;
