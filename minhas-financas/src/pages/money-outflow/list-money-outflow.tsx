@@ -12,6 +12,7 @@ import "dayjs/locale/pt-br";
 import FixedExpenseTable from "../../components/tables/fixed-expense-table";
 import FixedExpense from "../../entities/FixedExpense";
 import FixedExpenseClient from "../../client/FixedExpenseClient";
+import MoneyOutflowModal from "../../components/modal/money-outflow-modal/money-outflow-modal";
 
 interface IProps {
     outflowClient: MoneyOutflowClient;
@@ -22,6 +23,7 @@ const ListMoneyOutflow = ({ outflowClient, fixedExpenseClient }: IProps) => {
     const [moneyOutflows, setMoneyOutflows] = useState<Array<MoneyOutflow>>([]);
     const [fixedExpenses, setFixedExpenses] = useState<Array<FixedExpense>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [outflowModal, setOutflowModal] = useState<{ isOpen: boolean, fixedExpense: FixedExpense | null }>({ isOpen: false, fixedExpense: null });
 
     useEffect(() => {
         setIsLoading(true);
@@ -69,141 +71,139 @@ const ListMoneyOutflow = ({ outflowClient, fixedExpenseClient }: IProps) => {
         return nFormat.format(total);
     }
 
-    const confirmPaymentFixedExpense = async (fixedId: number) => {
-        const fixedExpense = fixedExpenses.find(fixed => fixed.id == fixedId)!;
+    const onFixedExpenseRowClick = async (fixedId: number) => {
+        const fixedExpense = fixedExpenses.find(fixed => fixed.id == fixedId)!;        
 
-        const outflowDto = new MoneyOutflowDto(
-            fixedExpense.description,
-            fixedExpense.value!,
-            0,
-            "Débito",
-            "Nubank",
-            fixedExpense.paymentCategory,
-            dayjs().format("YYYY-MM-DD"),
-        )
-        try {
-            const moneyOutflow = await outflowClient.register(outflowDto)
+        setOutflowModal({ isOpen: true, fixedExpense });
+    }
 
-            setMoneyOutflows([...moneyOutflows, moneyOutflow]);
-        }
-        catch (err) {
-            alert("Não foi possível confirmar o pagamento do gasto fixo.");
-        }
+    const onOutflowSubmit = async (outflowDto:MoneyOutflowDto) => {
+        await outflowClient.register(outflowDto);
+        
+        alert("Saída registrada com sucesso");
     }
 
     return (
-        <Container className="mt-5">
-            <div className="d-flex justify-content-between">
-                <h1>
-                    Saída de dinheiro
-                </h1>
-                <h1>
-                    {dayjs().format("MM/YYYY")}
-                </h1>
-            </div>
+        <>
+            <Container className="mt-5">
+                <div className="d-flex justify-content-between">
+                    <h1>
+                        Saída de dinheiro
+                    </h1>
+                    <h1>
+                        {dayjs().format("MM/YYYY")}
+                    </h1>
+                </div>
 
-            <Link to={"/MoneyOutflow/Register"} className="btn btn-info text-white">
-                Adicionar saída
-            </Link>
+                <Link to={"/MoneyOutflow/Register"} className="btn btn-info text-white">
+                    Adicionar saída
+                </Link>
 
-            <Table striped bordered hover size="lg" className="mt-2">
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Descrição</th>
-                        <th>Valor</th>
-                        <th>Quantidade</th>
-                        <th>Forma de pagamento</th>
-                        <th>Local do pagamento</th>
-                        <th>Categoria</th>
-                        <th>Valor total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        !isLoading &&
-                        <>
-                            {
-                                moneyOutflows.length > 0 &&
-                                <>
-                                    {
-                                        moneyOutflows.map(moneyOutflow => (
-                                            <tr key={moneyOutflow.id}>
-                                                <td>
-                                                    {moneyOutflow.date.toLocaleDateString()}
-                                                </td>
-                                                <td>
-                                                    {moneyOutflow.description}
-                                                </td>
-                                                <td>
-                                                    {moneyOutflow.getFormatedValue()}
-                                                </td>
-                                                <td>
-                                                    {moneyOutflow.quantity}
-                                                </td>
-                                                <td>
-                                                    {moneyOutflow.paymentMethod}
-                                                </td>
-                                                <td>
-                                                    {moneyOutflow.paymentLocation}
-                                                </td>
-                                                <td>
-                                                    {moneyOutflow.paymentCategory}
-                                                </td>
-                                                <td>
-                                                    {moneyOutflow.getFormatedTotal()}
-                                                </td>
-                                            </tr>
-                                        ))
-                                    }
+                <Table striped bordered hover size="lg" className="mt-2">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Quantidade</th>
+                            <th>Forma de pagamento</th>
+                            <th>Local do pagamento</th>
+                            <th>Categoria</th>
+                            <th>Valor total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            !isLoading &&
+                            <>
+                                {
+                                    moneyOutflows.length > 0 &&
+                                    <>
+                                        {
+                                            moneyOutflows.map(moneyOutflow => (
+                                                <tr key={moneyOutflow.id}>
+                                                    <td>
+                                                        {moneyOutflow.date.toLocaleDateString()}
+                                                    </td>
+                                                    <td>
+                                                        {moneyOutflow.description}
+                                                    </td>
+                                                    <td>
+                                                        {moneyOutflow.getFormatedValue()}
+                                                    </td>
+                                                    <td>
+                                                        {moneyOutflow.quantity}
+                                                    </td>
+                                                    <td>
+                                                        {moneyOutflow.paymentMethod}
+                                                    </td>
+                                                    <td>
+                                                        {moneyOutflow.paymentLocation}
+                                                    </td>
+                                                    <td>
+                                                        {moneyOutflow.paymentCategory}
+                                                    </td>
+                                                    <td>
+                                                        {moneyOutflow.getFormatedTotal()}
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        }
+                                        <tr>
+                                            <td colSpan={8} className="text-end">
+                                                Total -{calcTotalMoneyOutflows(moneyOutflows)}
+                                            </td>
+                                        </tr>
+                                    </>
+                                }
+                                {moneyOutflows.length == 0 && (
                                     <tr>
-                                        <td colSpan={8} className="text-end">
-                                            Total -{calcTotalMoneyOutflows(moneyOutflows)}
+                                        <td className="text-center" colSpan={8}>
+                                            Nenhum registro encontrado
                                         </td>
                                     </tr>
-                                </>
-                            }
-                            {moneyOutflows.length == 0 && (
-                                <tr>
-                                    <td className="text-center" colSpan={8}>
-                                        Nenhum registro encontrado
-                                    </td>
-                                </tr>
-                            )
-                            }
-                        </>
-                    }
-                    {isLoading && <tr>
-                        <td className="text-center" colSpan={8}>
-                            Aguarde...
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </Table>
+                                )
+                                }
+                            </>
+                        }
+                        {isLoading && <tr>
+                            <td className="text-center" colSpan={8}>
+                                Aguarde...
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </Table>
 
-            <FixedExpenseTable
-                fixedExpenses={fixedExpenses}
-                isLoading={isLoading}
-                newColumns={[
-                    {
-                        columnName: "Confirmar",
-                        columnElement: (fixedExpense) => <Button
-                            variant="info"
-                            className="w-100 text-light"
-                            onClick={() => confirmPaymentFixedExpense(fixedExpense.id)}>
-                            Confirmar
-                        </Button>
-                    }
-                ]}
-            />
+                <FixedExpenseTable
+                    fixedExpenses={fixedExpenses}
+                    isLoading={isLoading}
+                    newColumns={[
+                        {
+                            columnName: "Confirmar",
+                            columnElement: (fixedExpense) => <Button
+                                variant="info"
+                                className="w-100 text-light"
+                                onClick={() => onFixedExpenseRowClick(fixedExpense.id)}>
+                                Confirmar
+                            </Button>
+                        },
 
-            {(!isLoading && moneyOutflows.length > 0) &&
-                <div className="p-5 m-auto" style={{ maxWidth: 600 }}>
-                    <MoneyOutflowChart moneyOutflows={moneyOutflows} />
-                </div>
-            }
-        </Container>
+                    ]}
+                />
+
+                {(!isLoading && moneyOutflows.length > 0) &&
+                    <div className="p-5 m-auto" style={{ maxWidth: 600 }}>
+                        <MoneyOutflowChart moneyOutflows={moneyOutflows} />
+                    </div>
+                }
+            </Container>
+
+            <MoneyOutflowModal
+                onSubmit={onOutflowSubmit}
+                fixedExpense={outflowModal.fixedExpense}
+                isOpen={outflowModal.isOpen} />
+        </>
     );
 }
 
