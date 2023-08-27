@@ -200,6 +200,7 @@ const ListMoneyOutflow = ({ outflowClient, fixedExpenseClient }: IProps) => {
             </Container>
 
             <MoneyOutflowModal
+                onExitClick={()=> setOutflowModal({isOpen: false, fixedExpense: null})}
                 onSubmit={onOutflowSubmit}
                 fixedExpense={outflowModal.fixedExpense}
                 isOpen={outflowModal.isOpen} />

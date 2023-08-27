@@ -8,7 +8,8 @@ dayjs.locale("pt-br");
 interface IProps {
     fixedExpense: FixedExpense | null,
     isOpen: boolean,
-    onSubmit: (moneyOutflowDto: MoneyOutflowDto) => Promise<void>
+    onSubmit: (moneyOutflowDto: MoneyOutflowDto) => Promise<void>,
+    onExitClick: ()=> void;
 }
 
 /**
@@ -16,11 +17,11 @@ interface IProps {
  * @param  
  * @returns 
  */
-const MoneyOutflowModal = ({ fixedExpense, isOpen, onSubmit }: IProps) => {    
+const MoneyOutflowModal = ({ fixedExpense, isOpen, onSubmit, onExitClick }: IProps) => {    
 
     return (
         <Modal show={isOpen} size="xl">
-            <Modal.Header closeButton>
+            <Modal.Header closeButton onClick={onExitClick}>
                 <Modal.Title>Confirmar gasto</Modal.Title>
             </Modal.Header>
 
