@@ -1,12 +1,24 @@
 import { Alert, Button, Card, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import MoneyOutflowDto from "../../../dto/MoneyOutflowDto";
 
 interface IProps {
     onSubmit: (moneyOutflow: MoneyOutflowDto) => Promise<void>;
+    defaultValues?: MoneyOutflowDto;
 }
 
-const FormMoneyOutflow = ({ onSubmit }: IProps) => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<MoneyOutflowDto>();
+const FormMoneyOutflow = ({ onSubmit, defaultValues }: IProps) => {
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<MoneyOutflowDto>({
+        defaultValues: {
+            description: defaultValues?.description,
+            date: defaultValues?.date,
+            paymentCategory: defaultValues?.paymentCategory,
+            paymentLocation: defaultValues?.paymentLocation,
+            paymentMethod: defaultValues?.paymentMethod,
+            quantity: defaultValues?.quantity,
+            value: defaultValues?.value
+        }
+    });
 
     const processSubmit = async (formData: MoneyOutflowDto) => {
         await onSubmit(formData);
