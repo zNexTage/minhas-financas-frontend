@@ -2,6 +2,7 @@ import { Container } from "react-bootstrap";
 import FormMoneyOutflow from "../../components/forms/form-money-outflow";
 import MoneyOutflowClient from "../../client/MoneyOutflowClient";
 import { useNavigate } from "react-router-dom";
+import MoneyOutflowDto from "../../dto/MoneyOutflowDto";
 
 interface IProps {
     client: MoneyOutflowClient

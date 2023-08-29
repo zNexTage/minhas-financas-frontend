@@ -1,3 +1,4 @@
+import MoneyOutflowDto from "../dto/MoneyOutflowDto";
 import MoneyOutflow from "../entities/MoneyOutflow";
 import MoneyOutflowMapper from "../mappers/money-outflow";
 import IHttpClient from "./providers/IHttpClient";

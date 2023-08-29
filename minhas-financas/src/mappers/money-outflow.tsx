@@ -1,3 +1,4 @@
+import MoneyOutflowDto from "../dto/MoneyOutflowDto";
 import MoneyOutflow from "../entities/MoneyOutflow";
 
 class MoneyOutflowMapper {
