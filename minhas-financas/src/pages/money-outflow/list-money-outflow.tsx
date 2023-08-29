@@ -32,7 +32,7 @@ const ListMoneyOutflow = ({ outflowClient, fixedExpenseClient }: IProps) => {
             getMoneyOutflows(),
             getFixedExpenses()
         ])
-            .catch(err => {
+            .catch(() => {
                 alert("Não foi possível obter as saídas e os gastos fixos");
             })
             .finally(() => {
@@ -47,7 +47,7 @@ const ListMoneyOutflow = ({ outflowClient, fixedExpenseClient }: IProps) => {
 
             setMoneyOutflows(moneyOutflows);
         }
-        catch (err) {
+        catch {
             //TODO: Handle exception!!
         }
 
@@ -59,7 +59,7 @@ const ListMoneyOutflow = ({ outflowClient, fixedExpenseClient }: IProps) => {
 
             setFixedExpenses(fixedExpensives);
         }
-        catch (err) {
+        catch  {
             //TODO: Handle exception!!
         }
     }
