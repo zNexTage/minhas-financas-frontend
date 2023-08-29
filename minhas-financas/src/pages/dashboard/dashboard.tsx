@@ -32,7 +32,7 @@ const Dashboard = ({
             getTotalMoneyInflow(),
             getTotalMoneyOutflow()
         ])
-            .catch(err => {
+            .catch(() => {
                 alert("Falha ao obter o total de entradas/saídas de dinheiro...");
             })
             .finally(() => {

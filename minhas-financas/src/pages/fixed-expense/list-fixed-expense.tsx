@@ -1,4 +1,4 @@
-import { Container, Table } from "react-bootstrap"
+import { Container } from "react-bootstrap"
 import FixedExpenseClient from "../../client/FixedExpenseClient";
 import { Link } from "react-router-dom";
 import { FIXED_EXPENSE_BASE_URL } from "../../routes/fixed-expense-routes";
@@ -34,7 +34,7 @@ const ListFixedExpense = ({ client }: IProps) => {
         setFixedExpenses(response);
     }
 
-    const numberFormat = new Intl.NumberFormat("pt-br", { style: "currency", currency: "BRL" });
+    //const numberFormat = new Intl.NumberFormat("pt-br", { style: "currency", currency: "BRL" });
 
     return (
         <Container className="mt-5">
