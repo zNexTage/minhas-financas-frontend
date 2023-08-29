@@ -5,7 +5,7 @@ import TokenDto from "../dto/TokenDto";
 
 class AxiosClient implements IHttpClient {
     private axiosClient!: AxiosInstance;
-    private BASE_URL = import.meta.env.PROD ? "https://localhost:7039/" : "http://localhost:5001/";
+    private BASE_URL = import.meta.env.PROD ? "http://localhost:2000/" : "https://localhost:7039/";
 
     /**
      * Config and get request headers
