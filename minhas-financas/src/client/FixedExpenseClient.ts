@@ -1,6 +1,5 @@
 import FixedExpenseDto from "../dto/FixedExpenseDto";
 import FixedExpense from "../entities/FixedExpense";
-import FixedExpenseMapper from "../mappers/FixedExpense";
 import IHttpClient from "./providers/IHttpClient";
 import IHttpClientRequestParameters from "./providers/IHttpClientRequestParameters";
 
