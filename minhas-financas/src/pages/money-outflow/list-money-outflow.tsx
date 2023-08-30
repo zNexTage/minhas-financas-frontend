@@ -43,7 +43,10 @@ const ListMoneyOutflow = ({ outflowClient, fixedExpenseClient }: IProps) => {
     const getMoneyOutflows = async () => {
 
         try {
-            const moneyOutflows = await outflowClient.getAll();
+            const today = new Date();
+            const month =  today.getMonth() + 1;
+            const year = today.getFullYear();
+            const moneyOutflows = await outflowClient.getAll(month, year);
 
             setMoneyOutflows(moneyOutflows);
         }

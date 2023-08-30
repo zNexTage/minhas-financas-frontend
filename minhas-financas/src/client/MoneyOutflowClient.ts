@@ -21,8 +21,10 @@ class MoneyOutflowClient {
      * The user must be logged, otherwise, 401 will be returned by the server.
      * @returns A list of MoneyOutflow
      */
-    async getAll(): Promise<Array<MoneyOutflow>> {
-        const response = await this.client.get<Array<MoneyOutflowDto>>({ url: this.BASE_URL });
+    async getAll(month:number, year:number): Promise<Array<MoneyOutflow>> {
+        let url = `${this.BASE_URL}?month=${month}&year=${year}`;
+
+        const response = await this.client.get<Array<MoneyOutflowDto>>({ url });
 
         const moneyOutflows = response.map(dto => this.mapper.fromDto(dto));
 
